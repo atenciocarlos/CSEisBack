@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String       @id @default(uuid())
+  alias     String       @unique
+  password  String       // Hashed via bcrypt
+  createdAt DateTime     @default(now())
+  calls     CallRecord[]
+}
+
+model CallRecord {
+  id           String   @id @default(uuid())
+  taskId       String   // e.g. "10323953" from "Task# 10323953"
+  status       String   // e.g. "Completed"
+  customer     String   // e.g. "Jared C"
+  type         String   // e.g. "TVI/SC"
+  eta          String   // e.g. "8/5/2025" or "10:30 AM"
+  address      String   // e.g. "621 E 10th St, Long Beach... etc"
+  technician   String?  // e.g. "John D" — extracted from OCR
+  rawText      String?  // Optional raw OCR text
+  imageUrl     String?  // Optional uploaded image link
+  
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+  uploadedById String
+  
+  createdAt    DateTime @default(now())
+  archivedAt   DateTime?  // null = active, set = archived
+}

@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/lib/generated/prisma
+
+# Local databases (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+
+# Google Cloud credentials (NEVER commit)
+config/google-credentials.json
+
+# Duplicate Next.js build dirs
+.next 2/
+.next 3/
